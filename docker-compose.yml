@@ -1,0 +1,48 @@
+# version: '2'
+# services:
+#     wordpress:
+#         image: wordpress
+#         ports:
+#             - "8080:80"
+#         # volumes:
+#         #     - ./data:/data
+#         env_file:
+#             - env
+#         links:
+#             - mariadb:mariadb
+#     mariadb:
+#        image: mariadb:latest
+#        ports:
+#            - "3306:3306"
+#        volumes:
+#            - $PWD/dbdata:/var/lib/mysql
+#       #  environment:
+#       #      MYSQL_ROOT_PASSWORD: mysql
+#        env_file:
+#            - env
+# wordpress:
+#   image: wordpress:latest
+#   environment:
+#     - WORDPRESS_DB_PASSWORD=wordpress
+#   links:
+#     - mysql:mysql
+#   ports:
+#     - "0.0.0.0:8080:80"
+
+wordpress:
+  image: wordpress
+  links:
+    - db:mysql
+  ports:
+    - 8080:80
+  environment:
+    WORDPRESS_DB_USER: wordpress
+    WORDPRESS_DB_PASSWORD: wordpress
+
+db:
+  image: mariadb
+  environment:
+    MYSQL_ROOT_PASSWORD: example
+    MYSQL_DATABASE: wordpress
+    MYSQL_USER: wordpress
+    MYSQL_PASSWORD: wordpress
